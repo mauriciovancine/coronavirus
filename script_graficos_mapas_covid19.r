@@ -64,7 +64,7 @@ mun_cases <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/
 dplyr::glimpse(mun_cases)
 
 # municipality time
-mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-cities-time.csv") %>% 
+mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-cities-time_changesOnly.csv") %>% 
   tidyr::separate(city, c("name_muni", "abbrev_state"), sep = "/") %>%
   dplyr::left_join(info %>% dplyr::select(ibge, pop2019), 
                    by = c("ibgeID" = "ibge")) %>% 
