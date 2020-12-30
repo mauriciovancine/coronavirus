@@ -1,7 +1,7 @@
 #' ---
 #' title: covid19 municipios e estados do brasil
 #' author: mauricio vancine
-#' date: 2020-12-04
+#' date: 2020-12-29
 #' ---
 
 # packages ----------------------------------------------------------------
