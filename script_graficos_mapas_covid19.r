@@ -1092,7 +1092,7 @@ map_brazil_deaths <- sta_cases_geo %>%
   tm_shape() +
   tm_polygons(border.col = "gray40", col = "deaths", palette = "Greys",
               textNA = "Sem registros",
-              title = "óbitos confirmadas", n = 5, style = "jenks") +
+              title = "Óbitos confirmadas", n = 5, style = "jenks") +
   tm_text(text = "deaths", shadow = TRUE) +
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.75, .08)) +
@@ -1111,7 +1111,7 @@ map_brazil_states_deaths_pop <- sta_cases_geo %>%
   tm_shape() +
   tm_polygons(border.col = "gray40", col = "deaths_per_100k_inhabitants", palette = "Greys",
               textNA = "Sem registros",
-              title = "óbitos confirmadas (por 100 mil hab.)", n = 5, style = "pretty") +
+              title = "Óbitos confirmadas (por 100 mil hab.)", n = 5, style = "pretty") +
   tm_text(text = "deaths_per_100k_inhabitants", shadow = TRUE) +
   tm_graticules(lines = FALSE) +
   tm_compass(position = c(.75, .08)) +
@@ -1171,7 +1171,7 @@ map_brazil_muni_deaths <- mun_cases_geo %>%
   tm_shape(bbox = sf::st_bbox(mun_cases_geo)) +
   tm_fill(col = "deaths", palette = "Greys",
           textNA = "Sem registros", colorNA = "white",
-          title = "óbitos confirmadas", n = 5, style = "jenks") +
+          title = "Óbitos confirmadas", n = 5, style = "jenks") +
   tm_borders(col = "gray30", lwd = .1) +
   tm_shape(sta_geo) +
   tm_borders(lwd = .5, col = "gray20") +
@@ -1192,7 +1192,7 @@ map_brazil_muni_deaths_pop <- mun_cases_geo %>%
   tm_shape(., bbox = sf::st_bbox(mun_cases_geo)) +
   tm_fill(col = "deaths_per_100k_inhabitants", palette = "Greys",
           textNA = "Sem registros", colorNA = "white",
-          title = "óbitos confirmadas (por 100 mil hab.)", n = 5, style = "pretty") +
+          title = "Óbitos confirmadas (por 100 mil hab.)", n = 5, style = "pretty") +
   tm_borders(col = "gray30", lwd = .1) +
   tm_shape(sta_geo) +
   tm_borders(lwd = .5, col = "gray20") +
@@ -1272,7 +1272,7 @@ for(i in mun_geo$abbrev_state %>% unique %>% seq){
     tm_shape() +
     tm_polygons(border.col = "gray40", col = "deaths_per_100k_inhabitants", 
                 palette = "Greys", textNA = "Sem registros",
-                title = "óbitos confirmadas (por 100 mil hab.)", n = 5, style = "pretty") +
+                title = "Óbitos confirmadas (por 100 mil hab.)", n = 5, style = "pretty") +
     tm_graticules(lines = FALSE) +
     tm_compass(size = 2.5, position = c(da_state[i, 4], da_state[i, 5])) +
     tm_scale_bar(text.size = .8, position = c(da_state[i, 6], da_state[i, 7])) +
@@ -1296,7 +1296,7 @@ model_state_cases_deaths <- sta_cases %>%
   scale_x_continuous(trans = "log10") +
   scale_y_continuous(trans = "log10") +
   theme_bw() +
-  labs(x = "Total de casos (log10)", y = "óbitos (log10)") +
+  labs(x = "Total de casos (log10)", y = "Óbitos (log10)") +
   theme(axis.title = element_text(size = 15))
 model_state_cases_deaths
 ggsave(filename = "modelos/model_states_cases_deaths.png", 
@@ -1311,7 +1311,7 @@ model_state_cases_deaths_pop<- sta_cases %>%
   geom_point(size = 4, fill = "black", col = "gray", shape = 21, alpha = .7) +
   geom_text_repel(aes(label = abbrev_state)) +
   theme_bw() +
-  labs(x = "Total de casos (por 100 mil hab.)", y = "óbitos (por 100 mil hab.)") +
+  labs(x = "Total de casos (por 100 mil hab.)", y = "Óbitos (por 100 mil hab.)") +
   theme(axis.title = element_text(size = 15))
 model_state_cases_deaths_pop
 ggsave(filename = "modelos/model_states_cases_deaths_pop.png", 
@@ -1327,12 +1327,12 @@ model_muni_cases_deaths <- mun_cases %>%
   geom_text_repel(data = mun_cases %>% 
                     dplyr::filter(deaths > 500, name_muni != "Caso Sem Localização Definida"), 
                   aes(label = paste0(name_muni, " (", abbrev_state, ")"))) +
-  labs(x = "Total de casos (log10)", y = "óbitos (log10)", 
+  labs(x = "Total de casos (log10)", y = "Óbitos (log10)", 
        title = "Relação do número de óbitos (log10) e de casos (log10) acima de 100 óbitos") +
   scale_x_continuous(trans = "log10") +
   scale_y_continuous(trans = "log10") +
   theme_bw() +
-  labs(x = "Total de casos (log10)", y = "óbitos (log10)") +
+  labs(x = "Total de casos (log10)", y = "Óbitos (log10)") +
   theme(axis.title = element_text(size = 15))
 model_muni_cases_deaths
 ggsave(filename = "modelos/model_muni_cases_deaths.png", 
@@ -1350,10 +1350,10 @@ model_muni_cases_deaths_pop <- mun_cases %>%
                     dplyr::filter(deaths_per_100k_inhabitants > 200 | 
                                     totalCases_per_100k_inhabitants >= 10000, name_muni != "Caso Sem Localização Definida"), 
                   aes(label = paste0(name_muni, " (", abbrev_state, ")"))) +
-  labs(x = "Total de casos (por 100 mil hab.) (log10)", y = "óbitos (por 100 mil hab.)",
+  labs(x = "Total de casos (por 100 mil hab.) (log10)", y = "Óbitos (por 100 mil hab.)",
        title = "Relação do número de óbitos (por 100 mil hab.) e de casos (por 100 mil hab.) acima de 50 óbitos por 100 mil hab.") +
   theme_bw() +
-  labs(x = "Total de casos (por 100 mil hab.)", y = "óbitos (por 100 mil hab.)") +
+  labs(x = "Total de casos (por 100 mil hab.)", y = "Óbitos (por 100 mil hab.)") +
   theme(axis.title = element_text(size = 15),
         legend.position = "none")
 model_muni_cases_deaths_pop
