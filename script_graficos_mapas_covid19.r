@@ -22,21 +22,27 @@ options(scipen = 1e5)
 
 # import data -------------------------------------------------------------
 # coronavirus no mundo
-download.file(url = "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.xlsx",
-              destfile = "COVID-19-geographic-disbtribution-worldwide.xlsx", mode = "wb")
-
-wd_cases <- readxl::read_xlsx("COVID-19-geographic-disbtribution-worldwide.xlsx") %>%
-  dplyr::mutate(date = dateRep %>% lubridate::as_date() %>% lubridate::ymd(),
-                country_name = stringr::str_replace_all(countriesAndTerritories, "_", " "),
-                country_code = countryterritoryCode,
-                country_id = geoId,
-                country_pop2019 = popData2019,
-                cases_pop = cases/(popData2019/1e6),
-                deaths_pop = deaths/(popData2019/1e6),
-                cases_rollmean = zoo::rollmean(cases, k = 7, fill = NA),
-                deaths_rollmean = zoo::rollmean(deaths, k = 7, fill = NA),
-                cases_rollmean_pop = cases_rollmean/(popData2019/1e6),
-                deaths_rollmean_pop = deaths_rollmean/(popData2019/1e6))
+wd_cases <- readr::read_csv("https://covid.ourworldindata.org/data/owid-covid-data.csv") %>%
+  dplyr::mutate(date = date %>% lubridate::as_date() %>% lubridate::ymd(),
+                country_name = stringr::str_replace_all(location, "_", " "),
+                cases = total_cases,
+                deaths = total_deaths,
+                cases_pop = new_cases_per_million,
+                deaths_pop = new_deaths_per_million,
+                cases_rollmean_pop = zoo::rollmean(new_cases_per_million, k = 7, fill = NA),
+                deaths_rollmean_pop = zoo::rollmean(new_deaths_per_million, k = 7, fill = NA),
+                vaccinations = new_vaccinations,
+                vaccinations_rollmean = zoo::rollmean(new_vaccinations, k = 7, fill = NA)) %>% 
+  dplyr::select(date,
+                country_name,
+                cases,
+                deaths,
+                cases_pop,
+                deaths_pop,
+                cases_rollmean_pop,
+                deaths_rollmean_pop,
+                vaccinations,
+                vaccinations_rollmean)
 wd_cases
 
 # municipality information
@@ -131,24 +137,25 @@ cou_cases <- wd_cases %>%
   dplyr::group_by(country_name) %>%
   dplyr::summarise(cases_sum = sum(cases)) %>%
   dplyr::arrange(-cases_sum) %>%
-  dplyr::slice(1:5) %>%
+  dplyr::slice(2:5) %>%
   dplyr::select(country_name) %>% 
   dplyr::pull()
+cou_cases <- c(cou_cases, "Brazil")
 cou_cases
 
 fig_world_cases <- wd_cases %>%
-  dplyr::filter(country_name %in% cou_cases, date > "2020-02-20") %>%
+  dplyr::filter(country_name %in% cou_cases, cases_pop >= 0, date > "2020-02-20") %>%
   ggplot() +
-  geom_line(aes(x = date, y = cases_pop, color = country_name), 
-            size = .2) +
-  geom_point(aes(x = date, y = cases_pop, color = country_name, 
-                 fill = country_name), col = "white", size = 3, 
+  geom_line(aes(x = date, y = cases_pop, color = country_name), size = .2) +
+  geom_point(aes(x = date, y = cases_pop, color = country_name, fill = country_name), col = "white", size = 3, 
              shape = 21, stroke = 1) +
-  geom_line(aes(x = date, y = cases_rollmean_pop, 
-                color = country_name), size = 1) +
-  geom_label_repel(data = wd_cases %>% dplyr::filter(country_name %in% cou_cases) %>%
+  geom_line(aes(x = date, y = cases_rollmean_pop, color = country_name), size = 1) +
+  geom_label_repel(data = wd_cases %>% 
+                     tidyr::drop_na(cases_pop) %>% 
+                     dplyr::filter(country_name %in% cou_cases) %>%
                      dplyr::filter(date == max(date)),
-                   aes(x = date, y = cases_rollmean_pop, label = country_name, color = country_name), fill = "white", hjust = 1, alpha = .9) +
+                   aes(x = date, y = cases_pop, label = country_name, color = country_name),
+                   fill = "white", hjust = 1, alpha = .9) +
   labs(x = "Data",
        y = "Número de novos casos (por milhões de hab.)",
        title = "Número de novos casos no mundo") +
@@ -166,9 +173,9 @@ ggsave(filename = "graficos/fig_world_cases.png",
 # world deaths ----
 cou_deaths <- wd_cases %>%
   dplyr::group_by(country_name) %>%
-  dplyr::summarise(deaths_sum = sum(deaths)) %>%
+  dplyr::summarise(deaths_sum = sum(deaths, na.rm = TRUE)) %>%
   dplyr::arrange(-deaths_sum) %>%
-  dplyr::slice(1:5) %>%
+  dplyr::slice(2:6) %>%
   dplyr::select(country_name) %>%
   dplyr::pull()
 cou_deaths
@@ -180,9 +187,11 @@ fig_world_deaths <- wd_cases %>%
   geom_point(aes(x = date, y = deaths_pop, color = country_name, fill = country_name), 
              col = "white", size = 3, shape = 21, stroke = 1) +
   geom_line(aes(x = date, y = deaths_rollmean_pop, color = country_name), size = 1) +
-  geom_label_repel(data = wd_cases %>% dplyr::filter(country_name %in% cou_deaths) %>%
+  geom_label_repel(data = wd_cases %>% 
+                     tidyr::drop_na(deaths_pop) %>% 
+                     dplyr::filter(country_name %in% cou_deaths) %>%
                      dplyr::filter(date == max(date)),
-                   aes(x = date, y = deaths_rollmean_pop, label = country_name, color = country_name),
+                   aes(x = date, y = deaths_pop, label = country_name, color = country_name),
                    fill = "white", hjust = 1, alpha = .9) +
   labs(x = "Data",
        y = "Número de novos óbitos (por milhões de hab.)",
@@ -197,6 +206,43 @@ fig_world_deaths <- wd_cases %>%
 fig_world_deaths
 ggsave(filename = "graficos/fig_world_deaths.png", 
        plot = fig_world_deaths, width = 30, height = 20, units = "cm", dpi = 200)
+
+# world vaccinations ----
+# cou_vaccinations <- wd_cases$vaccinations %>%
+#   dplyr::group_by(country_name) %>%
+#   dplyr::summarise(vaccinations_sum = sum(vaccinations, na.rm = TRUE)) %>%
+#   dplyr::arrange(-vaccinations_sum) %>%
+#   dplyr::slice(1:5) %>%
+#   dplyr::select(country_name) %>%
+#   dplyr::pull()
+# cou_vaccinations <- c(cou_vaccinations, "Brazil")
+# cou_vaccinations
+# 
+# fig_world_vaccinations <- wd_cases %>%
+#   ggplot() +
+#   geom_line(aes(x = date, y = vaccinations, color = country_name), size = .2) +
+#   geom_point(aes(x = date, y = vaccinations, color = country_name, fill = country_name), 
+#              col = "white", size = 3, shape = 21, stroke = 1) +
+#   geom_line(aes(x = date, y = vaccinations_rollmean, color = country_name), size = 1) +
+#   geom_label_repel(data = wd_cases %>% 
+#                      dplyr::filter(country_name %in% cou_deaths) %>%
+#                      dplyr::filter(date == max(date)),
+#                    aes(x = date, y = deaths_pop, label = country_name, color = country_name),
+#                    fill = "white", hjust = 1, alpha = .9) +
+#   labs(x = "Data",
+#        y = "Número de vacinados (por milhões de hab.)",
+#        title = "Número de vacinados no mundo") +
+#   scale_x_date(date_breaks = "10 day",
+#                date_labels = "%d/%m") +
+#   scale_color_jco() +
+#   scale_fill_jco() +
+#   theme_bw() +
+#   theme(axis.text.x = element_text(angle = 90, vjust = .5))
+# fig_world_vaccinations
+# ggsave(filename = "graficos/fig_world_vaccinations.png", 
+#        plot = fig_world_deaths, width = 30, height = 20, units = "cm", dpi = 200)
+
+
 
 # brazil ----
 # brazil total cases  ----
@@ -814,10 +860,10 @@ cases_summary_pop <- data_rc %>%
   tidyr::drop_na() %>%
   dplyr::filter(stringr::str_detect(var, "newCases")) %>% 
   dplyr::mutate(var = recode(var, 
-                newCases_br = "Brasil",
-                newCases_sp = "São Paulo",
-                newCases_pi = "RE Piracicaba",
-                newCases_rc = "Rio Claro"))
+                             newCases_br = "Brasil",
+                             newCases_sp = "São Paulo",
+                             newCases_pi = "RE Piracicaba",
+                             newCases_rc = "Rio Claro"))
 cases_summary_pop
 
 fig_cases_summary_pop <- ggplot(data = cases_summary_pop) +
