@@ -1,7 +1,7 @@
 #' ---
 #' title: covid19 municipios e estados do brasil
 #' author: mauricio vancine
-#' date: 2020-12-29
+#' date: 2021-02-04
 #' ---
 
 # packages ----------------------------------------------------------------
@@ -137,10 +137,10 @@ cou_cases <- wd_cases %>%
   dplyr::group_by(country_name) %>%
   dplyr::summarise(cases_sum = sum(cases)) %>%
   dplyr::arrange(-cases_sum) %>%
-  dplyr::slice(2:5) %>%
+  dplyr::filter(!country_name %in% c("World", "North America", "Europe", "South America", "European Union", "Asia")) %>% 
+  dplyr::slice(1:5) %>%
   dplyr::select(country_name) %>% 
   dplyr::pull()
-cou_cases <- c(cou_cases, "Brazil")
 cou_cases
 
 fig_world_cases <- wd_cases %>%
@@ -175,7 +175,8 @@ cou_deaths <- wd_cases %>%
   dplyr::group_by(country_name) %>%
   dplyr::summarise(deaths_sum = sum(deaths, na.rm = TRUE)) %>%
   dplyr::arrange(-deaths_sum) %>%
-  dplyr::slice(2:6) %>%
+  dplyr::filter(!country_name %in% c("World", "North America", "Europe", "South America", "European Union", "Asia")) %>% 
+  dplyr::slice(1:5) %>%
   dplyr::select(country_name) %>%
   dplyr::pull()
 cou_deaths
