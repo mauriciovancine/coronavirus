@@ -1395,7 +1395,7 @@ model_muni_cases_deaths_pop <- mun_cases %>%
   stat_smooth(method = "gam", formula = y ~ s(x, bs = "cs")) +
   geom_text_repel(data = mun_cases %>% 
                     dplyr::filter(deaths_per_100k_inhabitants > 200 | 
-                                    totalCases_per_100k_inhabitants >= 10000, name_muni != "Caso Sem Localização Definida"), 
+                                    totalCases_per_100k_inhabitants >= 20000, name_muni != "Caso Sem Localização Definida"), 
                   aes(label = paste0(name_muni, " (", abbrev_state, ")"))) +
   labs(x = "Total de casos (por 100 mil hab.) (log10)", y = "Óbitos (por 100 mil hab.)",
        title = "Relação do número de óbitos (por 100 mil hab.) e de casos (por 100 mil hab.) acima de 50 óbitos por 100 mil hab.") +
