@@ -150,22 +150,24 @@ fig_world_cases <- wd_cases %>%
   geom_point(aes(x = date, y = cases_pop, color = country_name, fill = country_name), col = "white", size = 3, 
              shape = 21, stroke = 1) +
   geom_line(aes(x = date, y = cases_rollmean_pop, color = country_name), size = 1) +
-  geom_label_repel(data = wd_cases %>% 
-                     tidyr::drop_na(cases_pop) %>% 
-                     dplyr::filter(country_name %in% cou_cases) %>%
-                     dplyr::filter(date == max(date)),
-                   aes(x = date, y = cases_pop, label = country_name, color = country_name),
-                   fill = "white", hjust = 1, alpha = .9) +
+  # geom_label_repel(data = wd_cases %>% 
+  #                    tidyr::drop_na(cases_pop) %>% 
+  #                    dplyr::filter(country_name %in% cou_cases) %>%
+  #                    dplyr::filter(date == max(date)),
+  #                  aes(x = date, y = cases_pop, label = country_name, color = country_name),
+  #                  fill = "white", hjust = 1, alpha = .9) +
   labs(x = "Data",
        y = "Número de novos casos (por milhões de hab.)",
-       title = "Número de novos casos no mundo") +
+       title = "Número de novos casos no mundo",
+       color = "Países",
+       fill = "Países") +
   scale_x_date(date_breaks = "10 day",
                date_labels = "%d/%m") +
   scale_color_jco() +
   scale_fill_jco() +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5),
-        legend.position = "none")
+        legend.position = c(.15, .8))
 fig_world_cases
 ggsave(filename = "graficos/fig_world_cases.png", 
        plot = fig_world_cases, width = 30, height = 20, units = "cm", dpi = 200)
@@ -188,22 +190,24 @@ fig_world_deaths <- wd_cases %>%
   geom_point(aes(x = date, y = deaths_pop, color = country_name, fill = country_name), 
              col = "white", size = 3, shape = 21, stroke = 1) +
   geom_line(aes(x = date, y = deaths_rollmean_pop, color = country_name), size = 1) +
-  geom_label_repel(data = wd_cases %>% 
-                     tidyr::drop_na(deaths_pop) %>% 
-                     dplyr::filter(country_name %in% cou_deaths) %>%
-                     dplyr::filter(date == max(date)),
-                   aes(x = date, y = deaths_pop, label = country_name, color = country_name),
-                   fill = "white", hjust = 1, alpha = .9) +
+  # geom_label_repel(data = wd_cases %>% 
+  #                    tidyr::drop_na(deaths_pop) %>% 
+  #                    dplyr::filter(country_name %in% cou_deaths) %>%
+  #                    dplyr::filter(date == max(date)),
+  #                  aes(x = date, y = deaths_pop, label = country_name, color = country_name),
+  #                  fill = "white", hjust = 1, alpha = .9) +
   labs(x = "Data",
        y = "Número de novos óbitos (por milhões de hab.)",
-       title = "Número de novos óbitos no mundo") +
+       title = "Número de novos óbitos no mundo",
+       color = "Países",
+       fill = "Países") +
   scale_x_date(date_breaks = "10 day",
                date_labels = "%d/%m") +
   scale_color_jco() +
   scale_fill_jco() +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5),
-        legend.position = "none")
+        legend.position = c(.15, .8))
 fig_world_deaths
 ggsave(filename = "graficos/fig_world_deaths.png", 
        plot = fig_world_deaths, width = 30, height = 20, units = "cm", dpi = 200)
