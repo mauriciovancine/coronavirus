@@ -1,0 +1,9 @@
+covid,enfuti,situacao_cor,n,p
+Negativo,Enfermaria,Alta,527,92.78
+Negativo,Enfermaria,Óbito,41,7.22
+Negativo,UTI,Alta,51,42.15
+Negativo,UTI,Óbito,70,57.85
+Positivo,Enfermaria,Alta,945,92.11
+Positivo,Enfermaria,Óbito,81,7.89
+Positivo,UTI,Alta,147,44.68
+Positivo,UTI,Óbito,182,55.32
