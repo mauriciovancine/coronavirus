@@ -1,5 +1,5 @@
 # dados
-"https://datastudio.google.com/u/0/reporting/44b18def-5c65-4a1b-976b-2fcc55bfabe1/page/9xg1B"
+# "https://datastudio.google.com/u/0/reporting/44b18def-5c65-4a1b-976b-2fcc55bfabe1/page/9xg1B"
 
 # packages
 library(tidyverse)
@@ -35,20 +35,20 @@ fig_rt <- da %>%
   geom_line(aes(x = Data, y = as.numeric(Rt)), color = "red", size = 1) +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = .2, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-11"), y = .35, size = 5, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = .2, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-16"), y = .35, size = 5, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
-  annotate("text", x = as_date("2021-03-22"), y = .27, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-22"), y = .3, size = 5, color = "blue",
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
-  annotate("text", x = as_date("2021-04-01"), y = .27, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-01"), y = .3, size = 5, color = "blue",
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   geom_hline(yintercept = 2, color = "gray30", size = 1, linetype = 2) +
   geom_hline(yintercept = 1, color = "gray", size = 1, linetype = 2) +
@@ -74,20 +74,20 @@ fig_casos <- da %>%
   geom_line(aes(x = Data, y = as.numeric(`Casos 7 ultimos dias`)), color = "steelblue", size = 1) +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = 10, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-11"), y = 17, size = 5, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = 10, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-16"), y = 17, size = 5, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-03-22"), y = 14, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-04-01"), y = 14, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
   labs(x = "Data",
@@ -111,20 +111,20 @@ fig_casos_ativos <- da %>%
   geom_line(aes(x = Data, y = zoo::rollmean(casos_ativos, k = 7, fill = NA)), color = "orange4", size = 1) +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = 100, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-11"), y = 135, size = 5, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = 100, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-16"), y = 135, size = 5, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-03-22"), y = 125, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-04-01"), y = 125, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
   labs(x = "Data",
@@ -147,20 +147,20 @@ fig_inter <- da %>%
             color = "steelblue", size = 1) +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = 15, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-11"), y = 23, size = 5, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = 15, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-16"), y = 23, size = 5, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-03-22"), y = 20, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-04-01"), y = 20, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
   ylim(0, 200) +
@@ -183,26 +183,26 @@ fig_uti <- da %>%
   geom_line(aes(x = Data, y = as.numeric(`UTI 7 últimos`)), color = "red", size = 1) +
   geom_hline(yintercept = 71, color = "red", size = .7, linetype = 2) +
   geom_label(aes(x = da$Data[320], y = 75), fill = "red", size = 5, 
-                 label = "Número total de vagas de disponíveis nas UTIs", alpha = .7) +
+                 label = "Número total de vagas disponíveis nas UTIs", alpha = .7) +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = 7, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-11"), y = 10, size = 5, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = 7, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-16"), y = 10, size = 5, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-03-22"), y = 9, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-04-01"), y = 9, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   labs(x = "Data",
-       y = "Média de internações dos 7 últimos dias",
+       y = "Média de internações dos últimos 7 dias",
        title = "Número de internados (UTI)") +
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
   theme_bw() +
@@ -223,20 +223,20 @@ fig_obitos <- da %>%
   geom_line(aes(x = Data, y = obitos7d), color = "gray30", size = 1) +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = .3, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-11"), y = .5, size = 5, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = .3, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-16"), y = .5, size = 5, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
-  annotate("text", x = as_date("2021-03-22"), y = .4, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-22"), y = .45, size = 5, color = "blue",
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
-  annotate("text", x = as_date("2021-04-01"), y = .4, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-01"), y = .45, size = 5, color = "blue",
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
   labs(x = "Data",
@@ -259,20 +259,20 @@ fig_obitos_total <- da %>%
   geom_line(aes(x = Data, y = as.numeric(`Óbitos 7 últimos`)), color = "gray30", size = 1) +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = 2, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-11"), y = 3.5, size = 5, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = 2, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-16"), y = 3.5, size = 5, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-03-22"), y = 3, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-04-01"), y = 3, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
   labs(x = "Data",
@@ -289,9 +289,8 @@ ggsave(filename = "fig_obitos_total.png",
        plot = fig_obitos_total, width = 30, height = 20, units = "cm", dpi = 200)
 
 # internacoes -------------------------------------------------------------
-
 # publica ----
-da_pu <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal_publico.csv") %>% 
+da_pu <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal.csv") %>% 
   dplyr::mutate(date = str_replace_all(date, " ", "-"),
                 date = str_replace(date, "jan.", "01"),
                 date = str_replace(date, "fev.", "02"),
@@ -308,7 +307,6 @@ da_pu <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupa
                 date = str_replace_all(date, "-de-", "-"),
                 date = dmy(date))
 da_pu
-
 
 glimpse(da_pu)
 
@@ -328,20 +326,20 @@ fig_inter_pub <- da_pu %>%
   geom_label(aes(x = da_pu$date[27], y = 30), size = 5, color = "steelblue", label = "Enfermaria disponíveis") +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = 5, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-11"), y = 7, size = 4, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = 5, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-16"), y = 7, size = 4, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
-  annotate("text", x = as_date("2021-03-22"), y = 7, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-03-22"), y = 7, size = 4, color = "blue",
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
-  annotate("text", x = as_date("2021-04-01"), y = 7, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+  annotate("text", x = as_date("2021-04-01"), y = 7, size = 4, color = "blue",
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
   labs(x = "Data",
@@ -353,13 +351,11 @@ fig_inter_pub <- da_pu %>%
         axis.text.x = element_text(size = 10, angle = 90, vjust = .5),
         axis.text.y = element_text(size = 15),
         legend.position = "none")
-fig_inter_pub
 ggsave(filename = "fig_inter_pub.png", 
        plot = fig_inter_pub, width = 30, height = 20, units = "cm", dpi = 200)
 
-
 # privada ----
-da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal_particular.csv") %>% 
+da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal(1).csv") %>% 
   dplyr::mutate(date = str_replace_all(date, " ", "-"),
                 date = str_replace(date, "jan.", "01"),
                 date = str_replace(date, "fev.", "02"),
@@ -376,7 +372,6 @@ da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupa
                 date = str_replace_all(date, "-de-", "-"),
                 date = dmy(date))
 da_pr
-
 
 glimpse(da_pr)
 
@@ -397,19 +392,19 @@ fig_inter_pri <- da_pr %>%
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
   annotate("text", x = as_date("2021-03-11"), y = 7, size = 5, color = "red",
-           label = "Início plano SP", alpha = .7, angle = 90) +
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
   annotate("text", x = as_date("2021-04-16"), y = 7, size = 5, color = "red",
-           label = "Final plano SP", alpha = .7, angle = 90) +
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-03-22"), y = 10, size = 5, color = "blue",
-           label = "Início restrição RC", alpha = .7, angle = 90) +
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-04-01"), y = 10, size = 5, color = "blue",
-           label = "Final restrição RC", alpha = .7, angle = 90) +
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
   labs(x = "Data",
@@ -421,7 +416,6 @@ fig_inter_pri <- da_pr %>%
         axis.text.x = element_text(size = 10, angle = 90, vjust = .5),
         axis.text.y = element_text(size = 15),
         legend.position = "none")
-fig_inter_pri
 ggsave(filename = "fig_inter_pri.png", 
        plot = fig_inter_pri, width = 30, height = 20, units = "cm", dpi = 200)
 
