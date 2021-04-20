@@ -351,6 +351,8 @@ fig_inter_pub <- da_pu %>%
         axis.text.x = element_text(size = 10, angle = 90, vjust = .5),
         axis.text.y = element_text(size = 15),
         legend.position = "none")
+fig_inter_pub
+
 ggsave(filename = "fig_inter_pub.png", 
        plot = fig_inter_pub, width = 30, height = 20, units = "cm", dpi = 200)
 
@@ -386,24 +388,24 @@ fig_inter_pri <- da_pr %>%
   geom_hline(yintercept = 31, color = "red", linetype = 3) +
   geom_hline(yintercept = 57, color = "steelblue", linetype = 3) +
   
-  geom_label(aes(x = da_pu$date[15], y = 91), size = 5, color = "gray10", label = "Total disponíveis") +
-  geom_label(aes(x = da_pu$date[14], y = 34), size = 5, color = "red", label = "UTIs disponível") +
-  geom_label(aes(x = da_pu$date[25], y = 60), size = 5, color = "steelblue", label = "Enfermaria disponíveis") +
+  geom_label(aes(x = da_pr$date[15], y = 91), size = 5, color = "gray10", label = "Total disponíveis") +
+  geom_label(aes(x = da_pr$date[14], y = 34), size = 5, color = "red", label = "UTIs disponível") +
+  geom_label(aes(x = da_pr$date[25], y = 60), size = 5, color = "steelblue", label = "Enfermaria disponíveis") +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-03-11"), y = 7, size = 5, color = "red",
+  annotate("text", x = as_date("2021-03-11"), y = 10, size = 4, color = "red",
            label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
-  annotate("text", x = as_date("2021-04-16"), y = 7, size = 5, color = "red",
+  annotate("text", x = as_date("2021-04-16"), y = 10, size = 4, color = "red",
            label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
-  annotate("text", x = as_date("2021-03-22"), y = 10, size = 5, color = "blue",
+  annotate("text", x = as_date("2021-03-22"), y = 9, size = 4, color = "blue",
            label = "Início Restrição RC", alpha = .7, angle = 90) +
   
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
-  annotate("text", x = as_date("2021-04-01"), y = 10, size = 5, color = "blue",
+  annotate("text", x = as_date("2021-04-01"), y = 9, size = 4, color = "blue",
            label = "Final Restrição RC", alpha = .7, angle = 90) +
   
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
@@ -416,6 +418,8 @@ fig_inter_pri <- da_pr %>%
         axis.text.x = element_text(size = 10, angle = 90, vjust = .5),
         axis.text.y = element_text(size = 15),
         legend.position = "none")
+fig_inter_pri
+
 ggsave(filename = "fig_inter_pri.png", 
        plot = fig_inter_pri, width = 30, height = 20, units = "cm", dpi = 200)
 
