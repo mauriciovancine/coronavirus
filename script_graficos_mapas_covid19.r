@@ -5,6 +5,7 @@
 #' ---
 
 # packages ----------------------------------------------------------------
+
 # load packages
 library(ggrepel)
 library(geobr)
