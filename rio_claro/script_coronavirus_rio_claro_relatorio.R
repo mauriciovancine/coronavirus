@@ -6,7 +6,7 @@ library(tidyverse)
 library(lubridate)
 
 # directory
-setwd("rio_claro/relatorio")
+setwd("rio_claro")
 
 # data ----
 da <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Tabela com dados diários_Tabela.csv") %>% 
