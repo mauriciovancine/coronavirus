@@ -2,7 +2,11 @@
 
 Esse relatório mostra o número de casos e óbitos de **COVID-19** em Rio Claro/SP.
 
-Última atualização: **29-04-2021**.
+Última atualização: **11-05-2021**.
+
+### Isolamento
+
+![](fig_isolamento.png)
 
 ### Número de novo casos
 

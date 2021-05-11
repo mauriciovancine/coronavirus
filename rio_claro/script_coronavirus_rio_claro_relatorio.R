@@ -288,6 +288,67 @@ fig_obitos_total
 ggsave(filename = "fig_obitos_total.png", 
        plot = fig_obitos_total, width = 30, height = 20, units = "cm", dpi = 200)
 
+
+# isolamento --------------------------------------------------------------
+da_is <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Evolução diária_Gráfico de linhas.csv") %>% 
+  dplyr::mutate(date = str_replace_all(date, " ", "-"),
+                date = str_replace(date, "jan.", "01"),
+                date = str_replace(date, "fev.", "02"),
+                date = str_replace(date, "mar.", "03"),
+                date = str_replace(date, "abr.", "04"),
+                date = str_replace(date, "mai.", "05"),
+                date = str_replace(date, "jun.", "06"),
+                date = str_replace(date, "jul.", "07"),
+                date = str_replace(date, "ago.", "08"),
+                date = str_replace(date, "set.", "09"),
+                date = str_replace(date, "out.", "10"),
+                date = str_replace(date, "nov.", "11"),
+                date = str_replace(date, "dez.", "12"),
+                date = str_replace_all(date, "-de-", "-"),
+                date = dmy(date),
+                isolamento = as.numeric(ifelse(`Isolamento média 7d` == "null", NA, `Isolamento média 7d`)),
+                casos = as.numeric(ifelse(`Novos casos média 7d` == "null", NA, `Novos casos média 7d`))) %>% 
+  dplyr::select(date, isolamento, casos)
+da_is
+
+glimpse(da_is)
+
+fig_isolamento <- da_is %>%
+  ggplot() +
+  geom_line(aes(x = date, y = isolamento), color = "blue", size = 1) +
+  # geom_point(aes(x = date, y = isolamento), color = "blue", size = 3, alpha = .3) +
+  
+  geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
+  annotate("text", x = as_date("2021-03-11"), y = 34.5, size = 5, color = "red",
+           label = "Início Fase Emer. SP", alpha = .7, angle = 90) +
+  
+  geom_vline(xintercept = as_date("2021-04-11"), color = "red", linetype = 3) +
+  annotate("text", x = as_date("2021-04-16"), y = 34.5, size = 5, color = "red",
+           label = "Final Fase Emer. SP", alpha = .7, angle = 90) +
+  
+  geom_vline(xintercept = as_date("2021-03-26"), color = "blue", linetype = 3) +
+  annotate("text", x = as_date("2021-03-22"), y = 34, size = 5, color = "blue",
+           label = "Início Restrição RC", alpha = .7, angle = 90) +
+  
+  geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
+  annotate("text", x = as_date("2021-04-01"), y = 34, size = 5, color = "blue",
+           label = "Final Restrição RC", alpha = .7, angle = 90) +
+  
+  scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
+  labs(x = "Data",
+       y = "Porcentagem de isolamento dos 7 últimos dias",
+       title = "Isolamento médio nos 7 últimos dias") +
+  ylim(30, 60) +
+  theme_bw() +
+  theme(title = element_text(size = 20),
+        axis.title = element_text(size = 20),
+        axis.text.x = element_text(size = 10, angle = 90, vjust = .5),
+        axis.text.y = element_text(size = 15),
+        legend.position = "none")
+fig_isolamento
+ggsave(filename = "fig_isolamento.png", 
+       plot = fig_isolamento, width = 30, height = 20, units = "cm", dpi = 200)
+
 # internacoes -------------------------------------------------------------
 # publica ----
 da_pu <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal.csv") %>% 
@@ -352,7 +413,6 @@ fig_inter_pub <- da_pu %>%
         axis.text.y = element_text(size = 15),
         legend.position = "none")
 fig_inter_pub
-
 ggsave(filename = "fig_inter_pub.png", 
        plot = fig_inter_pub, width = 30, height = 20, units = "cm", dpi = 200)
 
@@ -374,7 +434,6 @@ da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupa
                 date = str_replace_all(date, "-de-", "-"),
                 date = dmy(date))
 da_pr
-
 glimpse(da_pr)
 
 # internacao publica ----
@@ -419,7 +478,6 @@ fig_inter_pri <- da_pr %>%
         axis.text.y = element_text(size = 15),
         legend.position = "none")
 fig_inter_pri
-
 ggsave(filename = "fig_inter_pri.png", 
        plot = fig_inter_pri, width = 30, height = 20, units = "cm", dpi = 200)
 
