@@ -313,10 +313,37 @@ da_is
 
 glimpse(da_is)
 
+scale_factor_cases <- max(da_is$casos, na.rm = TRUE) / max(da_is$isolamento, na.rm = TRUE)
+scale_factor_cases
+
+fig_cases_isolation_rc <- ggplot(data = da_is, aes(x = date)) +
+  geom_line(aes(y = casos), color = "red", size = .2, linetype = 2) +
+  geom_point(aes(y = casos), size = 3, color = "white", fill = "red", shape = 21, stroke = .5, alpha = .95) +
+  geom_line(aes(y = casos), color = "red", size = 1.5, alpha = .6) +
+  geom_line(aes(y = isolamento * scale_factor_cases), size = .2, linetype = 2) +
+  geom_point(aes(y = isolamento * scale_factor_cases), size = 3, color = "white", fill = "blue", shape = 21, stroke = .5, alpha = .95) +
+  geom_line(aes(y = isolamento * scale_factor_cases), color = "blue", size = 1.5, alpha = .6) +
+  labs(x = "Data") +
+  scale_x_date(date_breaks = "5 day", date_labels = "%d/%m") +
+  scale_y_continuous(name = "Total de casos", 
+                     sec.axis = sec_axis(~./scale_factor_cases, name = "Isolamento (%)")) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5),
+        legend.position = "none",
+        axis.title.y.left = element_text(color = "red", size = 12),
+        axis.text.y.left = element_text(color = "red", size = 12),
+        axis.title.y.right = element_text(color = "blue", size = 12),
+        axis.text.y.right = element_text(color = "blue", size = 12))
+fig_cases_isolation_rc
+
+
+
+coeff <- max(da_is$casos, na.rm = TRUE) / max(da_is$isolamento, na.rm = TRUE)
+
 fig_isolamento <- da_is %>%
   ggplot() +
   geom_line(aes(x = date, y = isolamento), color = "blue", size = 1) +
-  # geom_point(aes(x = date, y = isolamento), color = "blue", size = 3, alpha = .3) +
+  geom_line(aes(x = date, y = casos/coeff), color = "red", size = 1) +
   
   geom_vline(xintercept = as_date("2021-03-15"), color = "red", linetype = 3) +
   annotate("text", x = as_date("2021-03-11"), y = 34.5, size = 5, color = "red",
@@ -333,17 +360,19 @@ fig_isolamento <- da_is %>%
   geom_vline(xintercept = as_date("2021-04-05"), color = "blue", linetype = 3) +
   annotate("text", x = as_date("2021-04-01"), y = 34, size = 5, color = "blue",
            label = "Final Restrição RC", alpha = .7, angle = 90) +
-  
   scale_x_date(date_breaks = "7 day", date_labels = "%d/%m") +
+  scale_y_continuous(sec.axis = sec_axis(~(.*coeff), guide = , name = "Casos dos últimos 7 dias")) + 
   labs(x = "Data",
        y = "Porcentagem de isolamento dos 7 últimos dias",
        title = "Isolamento médio nos 7 últimos dias") +
-  ylim(30, 60) +
   theme_bw() +
   theme(title = element_text(size = 20),
         axis.title = element_text(size = 20),
         axis.text.x = element_text(size = 10, angle = 90, vjust = .5),
-        axis.text.y = element_text(size = 15),
+        axis.title.y.left = element_text(color = "blue", size = 12),
+        axis.text.y.left = element_text(color = "blue", size = 12),
+        axis.title.y.right = element_text(color = "red", size = 12),
+        axis.text.y.right = element_text(color = "red", size = 12),
         legend.position = "none")
 fig_isolamento
 ggsave(filename = "fig_isolamento.png", 
