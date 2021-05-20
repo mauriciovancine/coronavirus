@@ -9,7 +9,7 @@ library(lubridate)
 setwd("rio_claro")
 
 # data ----
-da <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Tabela com dados diários_Tabela.csv") %>% 
+da <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Tabela com dados diários_Tabela.csv") |> 
   dplyr::mutate(Data = str_replace_all(Data, " ", "-"),
                 Data = str_replace(Data, "jan.", "01"),
                 Data = str_replace(Data, "fev.", "02"),
@@ -26,11 +26,10 @@ da <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Tabela c
                 Data = str_replace_all(Data, "-de-", "-"),
                 Data = dmy(Data))
 da
-
 glimpse(da)
 
 # rt ----
-fig_rt <- da %>%
+fig_rt <- da |>
   ggplot() +
   geom_line(aes(x = Data, y = as.numeric(Rt)), color = "red", size = 1) +
   
@@ -69,7 +68,7 @@ ggsave(filename = "fig_rt.png",
        plot = fig_rt, width = 30, height = 20, units = "cm", dpi = 200)
 
 # Casos 7 últimos dias ----
-fig_casos <- da %>%
+fig_casos <- da |>
   ggplot() +
   geom_line(aes(x = Data, y = as.numeric(`Casos 7 ultimos dias`)), color = "steelblue", size = 1) +
   
@@ -105,8 +104,8 @@ ggsave(filename = "fig_casos.png",
        plot = fig_casos, width = 30, height = 20, units = "cm", dpi = 200)
 
 # Casos ativos 7 últimos dias ----
-fig_casos_ativos <- da %>%
-  dplyr::mutate(casos_ativos = as.numeric(ifelse(`Casos ativos` == "null", NA, `Casos ativos`))) %>% 
+fig_casos_ativos <- da |>
+  dplyr::mutate(casos_ativos = as.numeric(ifelse(`Casos ativos` == "null", NA, `Casos ativos`))) |> 
   ggplot() +
   geom_line(aes(x = Data, y = zoo::rollmean(casos_ativos, k = 7, fill = NA)), color = "orange4", size = 1) +
   
@@ -141,7 +140,7 @@ ggsave(filename = "fig_casos_ativos.png",
        plot = fig_casos_ativos, width = 30, height = 20, units = "cm", dpi = 200)
 
 # Internações SARG 7 últimos ----
-fig_inter <- da %>%
+fig_inter <- da |>
   ggplot() +
   geom_line(aes(x = Data, y = as.numeric(`Internações 7 últimos`)), 
             color = "steelblue", size = 1) +
@@ -178,7 +177,7 @@ ggsave(filename = "fig_inter_sarg.png",
        plot = fig_inter, width = 30, height = 20, units = "cm", dpi = 200)
 
 # `UTI 7 últimos`  ----
-fig_uti <- da %>%
+fig_uti <- da |>
   ggplot() +
   geom_line(aes(x = Data, y = as.numeric(`UTI 7 últimos`)), color = "red", size = 1) +
   geom_hline(yintercept = 71, color = "red", size = .7, linetype = 2) +
@@ -216,9 +215,9 @@ ggsave(filename = "fig_inter_uti.png",
        plot = fig_uti, width = 30, height = 20, units = "cm", dpi = 200)
 
 # Óbitos 7 últimos ----
-fig_obitos <- da %>%
-  dplyr::filter(Óbitos != "null") %>% 
-  dplyr::mutate(obitos7d = zoo::rollmean(as.numeric(Óbitos), k = 7, fill = NA)) %>% 
+fig_obitos <- da |>
+  dplyr::filter(Óbitos != "null") |> 
+  dplyr::mutate(obitos7d = zoo::rollmean(as.numeric(Óbitos), k = 7, fill = NA)) |> 
   ggplot() +
   geom_line(aes(x = Data, y = obitos7d), color = "gray30", size = 1) +
   
@@ -254,7 +253,7 @@ ggsave(filename = "fig_obitos.png",
        plot = fig_obitos, width = 30, height = 20, units = "cm", dpi = 200)
 
 # Óbitos acumulados 7 últimos ----
-fig_obitos_total <- da %>%
+fig_obitos_total <- da |>
   ggplot() +
   geom_line(aes(x = Data, y = as.numeric(`Óbitos 7 últimos`)), color = "gray30", size = 1) +
   
@@ -290,7 +289,7 @@ ggsave(filename = "fig_obitos_total.png",
 
 
 # isolamento --------------------------------------------------------------
-da_is <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Evolução diária_Gráfico de linhas.csv") %>% 
+da_is <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Evolução diária_Gráfico de linhas.csv") |> 
   dplyr::mutate(date = str_replace_all(date, " ", "-"),
                 date = str_replace(date, "jan.", "01"),
                 date = str_replace(date, "fev.", "02"),
@@ -307,7 +306,7 @@ da_is <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Evolu
                 date = str_replace_all(date, "-de-", "-"),
                 date = dmy(date),
                 isolamento = as.numeric(ifelse(`Isolamento média 7d` == "null", NA, `Isolamento média 7d`)),
-                casos = as.numeric(ifelse(`Novos casos média 7d` == "null", NA, `Novos casos média 7d`))) %>% 
+                casos = as.numeric(ifelse(`Novos casos média 7d` == "null", NA, `Novos casos média 7d`))) |> 
   dplyr::select(date, isolamento, casos)
 da_is
 
@@ -340,7 +339,7 @@ fig_cases_isolation_rc
 
 coeff <- max(da_is$casos, na.rm = TRUE) / max(da_is$isolamento, na.rm = TRUE)
 
-fig_isolamento <- da_is %>%
+fig_isolamento <- da_is |>
   ggplot() +
   geom_line(aes(x = date, y = isolamento), color = "blue", size = 1) +
   geom_line(aes(x = date, y = casos/coeff), color = "red", size = 1) +
@@ -380,7 +379,7 @@ ggsave(filename = "fig_isolamento.png",
 
 # internacoes -------------------------------------------------------------
 # publica ----
-da_pu <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal.csv") %>% 
+da_pu <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal.csv") |> 
   dplyr::mutate(date = str_replace_all(date, " ", "-"),
                 date = str_replace(date, "jan.", "01"),
                 date = str_replace(date, "fev.", "02"),
@@ -401,7 +400,7 @@ da_pu
 glimpse(da_pu)
 
 # internacao publica ----
-fig_inter_pub <- da_pu %>%
+fig_inter_pub <- da_pu |>
   ggplot() +
   geom_line(aes(x = date, y = as.numeric(`Total de leitos públicos`)), color = "gray10", size = 1) +
   geom_line(aes(x = date, y = as.numeric(`Enfermaria Público`)), color = "steelblue", size = 1) +
@@ -446,7 +445,7 @@ ggsave(filename = "fig_inter_pub.png",
        plot = fig_inter_pub, width = 30, height = 20, units = "cm", dpi = 200)
 
 # privada ----
-da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal(1).csv") %>% 
+da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal(1).csv") |> 
   dplyr::mutate(date = str_replace_all(date, " ", "-"),
                 date = str_replace(date, "jan.", "01"),
                 date = str_replace(date, "fev.", "02"),
@@ -466,7 +465,7 @@ da_pr
 glimpse(da_pr)
 
 # internacao publica ----
-fig_inter_pri <- da_pr %>%
+fig_inter_pri <- da_pr |>
   ggplot() +
   geom_line(aes(x = date, y = as.numeric(`Total de leitos particulares`)), color = "gray10", size = 1) +
   geom_line(aes(x = date, y = as.numeric(`Enfermaria Particular`)), color = "steelblue", size = 1) +
