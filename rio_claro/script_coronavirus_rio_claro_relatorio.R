@@ -335,8 +335,6 @@ fig_cases_isolation_rc <- ggplot(data = da_is, aes(x = date)) +
         axis.text.y.right = element_text(color = "blue", size = 12))
 fig_cases_isolation_rc
 
-
-
 coeff <- max(da_is$casos, na.rm = TRUE) / max(da_is$isolamento, na.rm = TRUE)
 
 fig_isolamento <- da_is |>
