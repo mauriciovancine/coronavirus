@@ -1,7 +1,7 @@
 #' ---
 #' title: covid19 municipios e estados do brasil
 #' author: mauricio vancine
-#' date: 2021-02-04
+#' date: 2021-05-31
 #' ---
 
 # packages ----------------------------------------------------------------
@@ -145,7 +145,9 @@ cou_cases <- wd_cases %>%
 cou_cases
 
 fig_world_cases <- wd_cases %>%
-  dplyr::filter(country_name %in% cou_cases, cases_pop >= 0, date > "2020-02-20") %>%
+  dplyr::filter(country_name %in% cou_cases, 
+                cases_pop > 0, 
+                date > "2020-02-20") %>%
   ggplot() +
   geom_line(aes(x = date, y = cases_pop, color = country_name), size = .2) +
   geom_point(aes(x = date, y = cases_pop, color = country_name, fill = country_name), col = "white", size = 3, 
@@ -214,39 +216,44 @@ ggsave(filename = "graficos/fig_world_deaths.png",
        plot = fig_world_deaths, width = 30, height = 20, units = "cm", dpi = 200)
 
 # world vaccinations ----
-# cou_vaccinations <- wd_cases$vaccinations %>%
+# cou_vaccinations <- wd_cases %>%
 #   dplyr::group_by(country_name) %>%
 #   dplyr::summarise(vaccinations_sum = sum(vaccinations, na.rm = TRUE)) %>%
 #   dplyr::arrange(-vaccinations_sum) %>%
 #   dplyr::slice(1:5) %>%
 #   dplyr::select(country_name) %>%
 #   dplyr::pull()
-# cou_vaccinations <- c(cou_vaccinations, "Brazil")
-# cou_vaccinations
-# 
-# fig_world_vaccinations <- wd_cases %>%
-#   ggplot() +
-#   geom_line(aes(x = date, y = vaccinations, color = country_name), size = .2) +
-#   geom_point(aes(x = date, y = vaccinations, color = country_name, fill = country_name), 
-#              col = "white", size = 3, shape = 21, stroke = 1) +
-#   geom_line(aes(x = date, y = vaccinations_rollmean, color = country_name), size = 1) +
-#   geom_label_repel(data = wd_cases %>% 
-#                      dplyr::filter(country_name %in% cou_deaths) %>%
-#                      dplyr::filter(date == max(date)),
-#                    aes(x = date, y = deaths_pop, label = country_name, color = country_name),
-#                    fill = "white", hjust = 1, alpha = .9) +
-#   labs(x = "Data",
-#        y = "Número de vacinados (por milhões de hab.)",
-#        title = "Número de vacinados no mundo") +
-#   scale_x_date(date_breaks = "10 day",
-#                date_labels = "%d/%m") +
-#   scale_color_jco() +
-#   scale_fill_jco() +
-#   theme_bw() +
-#   theme(axis.text.x = element_text(angle = 90, vjust = .5))
-# fig_world_vaccinations
-# ggsave(filename = "graficos/fig_world_vaccinations.png", 
-#        plot = fig_world_deaths, width = 30, height = 20, units = "cm", dpi = 200)
+cou_vaccinations <- c("China", "United States", "India", "United Kingdom", "Brazil")
+cou_vaccinations
+ 
+fig_world_vaccinations <- wd_cases %>%
+  dplyr::filter(country_name %in% cou_vaccinations, 
+                date > "2020-12-01") %>%
+  ggplot() +
+  geom_line(aes(x = date, y = vaccinations,
+                color = country_name), size = .2) +
+  geom_point(aes(x = date, y = vaccinations, 
+                 color = country_name, fill = country_name),
+             col = "white", size = 3, shape = 21, stroke = 1) +
+  geom_line(aes(x = date, y = vaccinations_rollmean, 
+                color = country_name), size = 1) +
+  labs(x = "Data",
+       y = "Número de vacinados (por milhões de hab.)",
+       color = "Countries",
+       fill = "Countries",
+       title = "Número de vacinados no mundo") +
+  scale_x_date(date_breaks = "10 day",
+               date_labels = "%d/%m") +
+  scale_color_jco() +
+  scale_fill_jco() +
+  #scale_y_log10() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5),
+        axis.text.y = element_text(angle = 90, hjust = .5),
+        legend.position = c(.15, .8))
+fig_world_vaccinations
+ggsave(filename = "graficos/fig_world_vaccinations.png",
+       plot = fig_world_deaths, width = 30, height = 20, units = "cm", dpi = 200)
 
 
 
@@ -858,7 +865,32 @@ data_rc <- da_sp %>%
   dplyr::select(date, newCases_rc, newDeaths_rc)
 data_rc
 
+data_bo <- da_sp %>%
+  dplyr::filter(nome_munic == "Botucatu") %>% 
+  dplyr::group_by(datahora) %>% 
+  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2019)/1e5),
+                   newDeaths_pc = sum(obitos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::mutate(newCases_bo = zoo::rollmean(newCases_pc, k = 7, fill = NA),
+                newDeaths_bo = zoo::rollmean(newDeaths_pc, k = 7, fill = NA),
+                date = datahora) %>% 
+  dplyr::select(date, newCases_bo, newDeaths_bo)
+data_bo
+
+data_se <- da_sp %>%
+  dplyr::filter(nome_munic == "Serrana") %>% 
+  dplyr::group_by(datahora) %>% 
+  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2019)/1e5),
+                   newDeaths_pc = sum(obitos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::mutate(newCases_se = zoo::rollmean(newCases_pc, k = 7, fill = NA),
+                newDeaths_se = zoo::rollmean(newDeaths_pc, k = 7, fill = NA),
+                date = datahora) %>% 
+  dplyr::select(date, newCases_se, newDeaths_se)
+data_se
+
+
 cases_summary_pop <- data_rc %>% 
+  dplyr::left_join(data_bo) %>% 
+  dplyr::left_join(data_se) %>% 
   dplyr::left_join(data_pi) %>% 
   dplyr::left_join(data_sp) %>% 
   dplyr::left_join(data_br) %>% 
@@ -869,7 +901,9 @@ cases_summary_pop <- data_rc %>%
                              newCases_br = "Brasil",
                              newCases_sp = "São Paulo",
                              newCases_pi = "RE Piracicaba",
-                             newCases_rc = "Rio Claro"))
+                             newCases_rc = "Rio Claro",
+                             newCases_bo = "Botucatu",
+                             newCases_se = "Serrana"))
 cases_summary_pop
 
 fig_cases_summary_pop <- ggplot(data = cases_summary_pop) +
@@ -879,7 +913,7 @@ fig_cases_summary_pop <- ggplot(data = cases_summary_pop) +
        y = "Número de novos casos (por 100 mil hab.)",
        color = "",
        title = "Número de novos casos (por 100 mil hab.)") +
-  scale_color_manual(values = wesanderson::wes_palette("Zissou1", 4, type = c("continuous"))) +
+  scale_color_manual(values = wesanderson::wes_palette("Zissou1", 6, type = c("continuous"))) +
   scale_x_date(date_breaks = "10 day", date_labels = "%d/%m") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5),
@@ -890,6 +924,8 @@ ggsave(filename = "graficos/fig_cases_summary_pop.png",
        plot = fig_cases_summary_pop, width = 30, height = 20, units = "cm", dpi = 200)
 
 fig_deaths_summary_pop <- data_rc %>% 
+  dplyr::left_join(data_bo) %>% 
+  dplyr::left_join(data_se) %>% 
   dplyr::left_join(data_pi) %>% 
   dplyr::left_join(data_sp) %>% 
   dplyr::left_join(data_br) %>%  
@@ -900,7 +936,9 @@ fig_deaths_summary_pop <- data_rc %>%
                              newDeaths_br = "Brasil",
                              newDeaths_sp = "São Paulo",
                              newDeaths_pi = "RE Piracicaba",
-                             newDeaths_rc = "Rio Claro")) %>% 
+                             newDeaths_rc = "Rio Claro",
+                             newDeaths_bo = "Botucatu",
+                             newDeaths_se = "Serrana")) %>% 
   ggplot() +
   aes(x = date, y = val, color = as.factor(var)) +
   geom_line(size = 1.5, alpha = .8) +
@@ -908,7 +946,7 @@ fig_deaths_summary_pop <- data_rc %>%
        y = "Número de novos óbitos (por 100 mil hab.)",
        color = "",
        title = "Número de novos óbitos (por 100 mil hab.)") +
-  scale_color_manual(values = wesanderson::wes_palette("Zissou1", 4, type = c("continuous"))) +
+  scale_color_manual(values = wesanderson::wes_palette("Zissou1", 6, type = c("continuous"))) +
   scale_x_date(date_breaks = "10 day", date_labels = "%d/%m") +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5),
