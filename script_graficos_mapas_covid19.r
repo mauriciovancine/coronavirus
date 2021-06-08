@@ -1,7 +1,7 @@
 #' ---
 #' title: covid19 municipios e estados do brasil
 #' author: mauricio vancine
-#' date: 2021-05-31
+#' date: 2021-06-07
 #' ---
 
 # packages ----------------------------------------------------------------
@@ -71,7 +71,7 @@ mun_cases <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/
 dplyr::glimpse(mun_cases)
 
 # municipality time
-mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-cities-time_changesOnly.csv") %>% 
+mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-cities-time_changesOnly.csv.gz") %>% 
   tidyr::separate(city, c("name_muni", "abbrev_state"), sep = "/") %>%
   dplyr::left_join(info %>% dplyr::select(ibge, pop2019), 
                    by = c("ibgeID" = "ibge")) %>% 
@@ -82,7 +82,7 @@ dplyr::glimpse(mun_cases_time)
 
 # import geodata ----------------------------------------------------------
 # state geodata
-sta_geo <- geobr::read_state(code_state = "all", year = 2019) %>%
+sta_geo <- geobr::read_state(code_state = "all", year = 2020) %>%
   sf::as_Spatial() %>%
   spatialEco::explode() %>%
   sf::st_as_sf() %>%
@@ -96,7 +96,7 @@ sta_geo_cen <- sf::st_centroid(sta_geo)
 sta_geo_cen
 
 # municipality geodata
-mun_geo <- geobr::read_municipality(code_muni = "all", year = 2019) %>%
+mun_geo <- geobr::read_municipality(code_muni = "all", year = 2020) %>%
   sf::st_crop(sta_geo)
 mun_geo
 
