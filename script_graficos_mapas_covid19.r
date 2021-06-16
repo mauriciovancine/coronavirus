@@ -1,7 +1,7 @@
 #' ---
 #' title: covid19 municipios e estados do brasil
 #' author: mauricio vancine
-#' date: 2021-06-07
+#' date: 2021-06-15
 #' ---
 
 # packages ----------------------------------------------------------------
@@ -80,6 +80,13 @@ mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid
   dplyr::mutate(name_muni = stringr::str_to_title(name_muni))
 dplyr::glimpse(mun_cases_time)
 
+# # percetage uti covid
+# uti <- readr::read_csv(
+#   paste0("https://s3-sa-east-1.amazonaws.com/ckan.saude.gov.br/Leitos/",
+#          lubridate::today()-1, "/esus-vepi.LeitoOcupacao.csv"))
+# uti
+# dplyr::glimpse(uti)
+  
 # import geodata ----------------------------------------------------------
 # state geodata
 sta_geo <- geobr::read_state(code_state = "all", year = 2020) %>%
@@ -253,7 +260,7 @@ fig_world_vaccinations <- wd_cases %>%
         legend.position = c(.15, .8))
 fig_world_vaccinations
 ggsave(filename = "graficos/fig_world_vaccinations.png",
-       plot = fig_world_deaths, width = 30, height = 20, units = "cm", dpi = 200)
+       plot = fig_world_vaccinations, width = 30, height = 20, units = "cm", dpi = 200)
 
 
 
