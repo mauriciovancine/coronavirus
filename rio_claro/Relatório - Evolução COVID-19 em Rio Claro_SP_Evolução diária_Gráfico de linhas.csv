@@ -1,4 +1,5 @@
 date,Isolamento média 7d,Novos casos média 7d
+null,null,null
 25 de mar. de 2020,null,null
 26 de mar. de 2020,null,null
 27 de mar. de 2020,null,null
@@ -452,4 +453,6 @@ date,Isolamento média 7d,Novos casos média 7d
 18 de jun. de 2021,38.142857142857146,110.14285714285714
 19 de jun. de 2021,38,108
 20 de jun. de 2021,38,108
-21 de jun. de 2021,null,104.14285714285714
+21 de jun. de 2021,38,104.14285714285714
+22 de jun. de 2021,null,90.57142857142857
+23 de jun. de 2021,null,99.28571428571429

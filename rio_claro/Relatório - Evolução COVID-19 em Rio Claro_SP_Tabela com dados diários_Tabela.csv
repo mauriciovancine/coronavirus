@@ -1,4 +1,6 @@
 Data,Casos novos,Recuperados,Descartados,Óbitos,Casos ativos,Internados SARG,Internados UTI,Rt,Casos 7 ultimos dias,Internações 7 últimos,UTI 7 últimos,Óbitos 7 últimos
+23 de jun. de 2021,161,72,195,7,1064,124,74,0.93,99.28571428571429,144.14285714285714,75,23
+22 de jun. de 2021,76,69,260,2,982,140,77,0.86,90.57142857142857,149.57142857142858,76.71428571428571,19
 21 de jun. de 2021,72,86,133,1,977,141,75,1,104.14285714285714,153.85714285714286,78,22
 20 de jun. de 2021,0,87,0,4,992,143,75,1.07,108,157.85714285714286,80.85714285714286,22
 19 de jun. de 2021,86,74,143,3,1083,147,77,1.1,108,160.85714285714286,81.14285714285714,21
@@ -453,3 +455,4 @@ Data,Casos novos,Recuperados,Descartados,Óbitos,Casos ativos,Internados SARG,In
 27 de mar. de 2020,0,0,null,0,null,14,null,null,null,null,null,null
 26 de mar. de 2020,0,0,null,0,null,16,null,null,null,null,null,null
 25 de mar. de 2020,1,null,null,null,null,15,null,null,null,null,null,null
+null,null,null,null,null,null,null,null,null,null,null,null,null

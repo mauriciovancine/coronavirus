@@ -443,7 +443,7 @@ ggsave(filename = "fig_inter_pub.png",
        plot = fig_inter_pub, width = 30, height = 20, units = "cm", dpi = 200)
 
 # privada ----
-da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal(1).csv") %>% 
+da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupação diária de leitos_Série temporal (1).csv") %>% 
   dplyr::mutate(date = str_replace_all(date, " ", "-"),
                 date = str_replace(date, "jan.", "01"),
                 date = str_replace(date, "fev.", "02"),
