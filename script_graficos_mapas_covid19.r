@@ -240,7 +240,7 @@ ggsave(filename = "graficos/fig_world_deaths.png",
 #   dplyr::slice(1:5) %>%
 #   dplyr::select(country_name) %>%
 #   dplyr::pull()
-cou_vaccinations <- c("China", "United States", "India", "United Kingdom", "Brazil")
+cou_vaccinations <- c("China", "United States", "India", "United Kingdom", "Brazil", "France", "Russia")
 cou_vaccinations
  
 fig_world_vaccinations <- wd_cases %>%
