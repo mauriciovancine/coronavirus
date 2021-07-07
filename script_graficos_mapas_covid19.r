@@ -80,6 +80,10 @@ mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid
   dplyr::mutate(name_muni = stringr::str_to_title(name_muni))
 dplyr::glimpse(mun_cases_time)
 
+mun_cases_time %>% 
+filter(name_muni == "Botucatu") %>% 
+  write_csv("botucatu.csv")
+
 # percetage uti covid
 uti <- readr::read_csv2("ocup_leitos_covid19_20210617_171832.csv")
 uti
