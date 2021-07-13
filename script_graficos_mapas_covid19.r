@@ -85,9 +85,9 @@ filter(name_muni == "Botucatu") %>%
   write_csv("botucatu.csv")
 
 # percetage uti covid
-uti <- readr::read_csv2("ocup_leitos_covid19_20210617_171832.csv")
-uti
-dplyr::glimpse(uti)
+# uti <- readr::read_csv2("ocup_leitos_covid19_20210617_171832.csv")
+# uti
+# dplyr::glimpse(uti)
 
 # # percetage uti covid
 # uti <- readr::read_csv(
@@ -148,9 +148,9 @@ mun_cases_time_geo <- mun_geo_cen %>%
 dplyr::glimpse(mun_cases_time_geo)
 
 # uti
-uti_geo <- sta_geo %>% 
-  dplyr::left_join(uti, by = c("name_state" = "uf"))
-uti_geo
+# uti_geo <- sta_geo %>% 
+#   dplyr::left_join(uti, by = c("name_state" = "uf"))
+# uti_geo
 
 # graphics ----------------------------------------------------------------
 # world ----
@@ -1162,27 +1162,27 @@ ggsave(filename = "graficos/fig_rio_claro_new_deaths_pop.png",
 # maps --------------------------------------------------------------------
 
 # map brazil states uti ----
-map_brazil_states_utis <- uti_geo %>%
-  mutate(
-    data_coleta_char = as.character(format(data_coleta, "%d/%m/%Y")),
-    data_coleta_char = fct_reorder(data_coleta_char, data_coleta)
-  ) %>%
-  ggplot() +
-  geom_sf(aes(fill = alerta), color = "white", lwd = .2) +
-  scale_fill_manual(values=c("Baixo" = "#55a95a", "Médio" = "#f4b132", "Crítico" = "#ca373c"), 
-                    breaks = c("Baixo", "Médio", "Crítico")) +
-  labs(title = "Taxa de ocupação (%) de leitos de UTI Covid-19 para adultos", 
-       fill = "Alerta", caption = "Observatório Covid-19 | Fiocruz") +
-  ylab("") + xlab("") +
-  theme_bw() +
-  theme(
-    legend.position="bottom",
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks = element_blank()
-  ) +
-  facet_wrap(~ data_coleta_char) 
-ggsave(map_brazil_states_utis, filename = "mapas/map_brazil_states_uti.png", dpi = 200)
+# map_brazil_states_utis <- uti_geo %>%
+#   mutate(
+#     data_coleta_char = as.character(format(data_coleta, "%d/%m/%Y")),
+#     data_coleta_char = fct_reorder(data_coleta_char, data_coleta)
+#   ) %>%
+#   ggplot() +
+#   geom_sf(aes(fill = alerta), color = "white", lwd = .2) +
+#   scale_fill_manual(values=c("Baixo" = "#55a95a", "Médio" = "#f4b132", "Crítico" = "#ca373c"), 
+#                     breaks = c("Baixo", "Médio", "Crítico")) +
+#   labs(title = "Taxa de ocupação (%) de leitos de UTI Covid-19 para adultos", 
+#        fill = "Alerta", caption = "Observatório Covid-19 | Fiocruz") +
+#   ylab("") + xlab("") +
+#   theme_bw() +
+#   theme(
+#     legend.position="bottom",
+#     axis.text.x = element_blank(),
+#     axis.text.y = element_blank(),
+#     axis.ticks = element_blank()
+#   ) +
+#   facet_wrap(~ data_coleta_char) 
+# ggsave(map_brazil_states_utis, filename = "mapas/map_brazil_states_uti.png", dpi = 200)
 
 # map brazil states cases ----
 map_brazil_states_cases <-  sta_cases_geo %>% 
