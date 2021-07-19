@@ -404,9 +404,9 @@ fig_inter_pub <- da_pu %>%
   geom_line(aes(x = date, y = as.numeric(`Enfermaria Público`)), color = "steelblue", size = 1) +
   geom_line(aes(x = date, y = as.numeric(`UTI Publico` )), color = "red", size = 1) +
   
-  geom_hline(yintercept = 67, color = "gray10", linetype = 3) +
-  geom_hline(yintercept = 40, color = "red", linetype = 3) +
-  geom_hline(yintercept = 27, color = "steelblue", linetype = 3) +
+  geom_hline(yintercept = 85, color = "gray10", linetype = 3) +
+  geom_hline(yintercept = 46, color = "red", linetype = 3) +
+  geom_hline(yintercept = 39, color = "steelblue", linetype = 3) +
   
   geom_label(aes(x = da_pu$date[15], y = 70), size = 5, color = "gray10", label = "Total disponíveis") +
   geom_label(aes(x = da_pu$date[14], y = 43), size = 5, color = "red", label = "UTIs disponível") +
@@ -462,7 +462,7 @@ da_pr <- readr::read_csv("Relatório - Evolução COVID-19 em Rio Claro_SP_Ocupa
 da_pr
 glimpse(da_pr)
 
-# internacao publica ----
+# internacao privada ----
 fig_inter_pri <- da_pr %>%
   ggplot() +
   geom_line(aes(x = date, y = as.numeric(`Total de leitos particulares`)), color = "gray10", size = 1) +
