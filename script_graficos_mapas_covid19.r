@@ -58,10 +58,11 @@ dplyr::glimpse(sta_cases)
 # state time
 sta_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv") %>% 
   dplyr::rename(abbrev_state = state) %>% 
-  dplyr::left_join(info %>% group_by(state) %>% summarise(pop2019 = sum(pop2019)/1e5), 
+  dplyr::left_join(info %>% group_by(state) %>% summarise(pop2020 = sum(pop2020)/1e5), 
                    by = c("abbrev_state" = "state")) %>% 
-  dplyr::mutate(newDeaths_per_100k_inhabitants = newDeaths/(pop2019),
-                newCases_per_100k_inhabitants = newCases/(pop2019), .after = totalCases_per_100k_inhabitants)
+  dplyr::mutate(newDeaths_per_100k_inhabitants = newDeaths/(pop2020),
+                newCases_per_100k_inhabitants = newCases/(pop2020), 
+                .after = totalCases_per_100k_inhabitants)
 dplyr::glimpse(sta_cases_time)
 
 # municipality
@@ -73,10 +74,10 @@ dplyr::glimpse(mun_cases)
 # municipality time
 mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-cities-time_changesOnly.csv.gz") %>% 
   tidyr::separate(city, c("name_muni", "abbrev_state"), sep = "/") %>%
-  dplyr::left_join(info %>% dplyr::select(ibge, pop2019), 
+  dplyr::left_join(info %>% dplyr::select(ibge, pop2020), 
                    by = c("ibgeID" = "ibge")) %>% 
-  dplyr::mutate(newDeaths_per_100k_inhabitants = newDeaths/(pop2019/1e5),
-                newCases_per_100k_inhabitants = newCases/(pop2019/1e5), .after = totalCases_per_100k_inhabitants) %>% 
+  dplyr::mutate(newDeaths_per_100k_inhabitants = newDeaths/(pop2020/1e5),
+                newCases_per_100k_inhabitants = newCases/(pop2020/1e5), .after = totalCases_per_100k_inhabitants) %>% 
   dplyr::mutate(name_muni = stringr::str_to_title(name_muni))
 dplyr::glimpse(mun_cases_time)
 
@@ -784,13 +785,13 @@ for(i in sta_cases_time$abbrev_state %>% unique){
 
 # plano sao paulo - https://github.com/seade-R/dados-covid-sp ----
 da_sp <- readr::read_csv2("https://raw.githubusercontent.com/seade-R/dados-covid-sp/master/data/dados_covid_sp.csv") %>% 
-  dplyr::left_join(info %>% dplyr::select(ibge, pop2019), by = c("codigo_ibge" = "ibge")) %>% 
+  dplyr::left_join(info %>% dplyr::select(ibge, pop2020), by = c("codigo_ibge" = "ibge")) %>% 
   dplyr::mutate(nome_drs_name = nome_drs %>% 
                   stringr::str_to_lower() %>% 
                   stringr::str_replace_all(" ", "_") %>% 
                   stringi::stri_trans_general(id = "Latin-ASCII"),
-                casos_novos_pc = casos_novos/(pop2019/1e5),
-                obitos_novos_pc = obitos_novos/(pop2019/1e5)) %>% 
+                casos_novos_pc = casos_novos/(pop2020/1e5),
+                obitos_novos_pc = obitos_novos/(pop2020/1e5)) %>% 
   dplyr::arrange(nome_drs)
 dplyr::glimpse(da_sp)
 
@@ -801,7 +802,7 @@ for(i in seq(na.omit(unique(da_sp$nome_drs)))){
   fig_planosp_new_cases <- da_sp %>%
     dplyr::filter(nome_drs == unique(da_sp$nome_drs)[i]) %>% 
     dplyr::group_by(nome_drs, datahora) %>% 
-    dplyr::summarise(casos_novos_sum_pc = sum(casos_novos)/(sum(pop2019)/1e5)) %>% 
+    dplyr::summarise(casos_novos_sum_pc = sum(casos_novos)/(sum(pop2020)/1e5)) %>% 
     dplyr::mutate(casos_novos_sum_pc_rollmean = zoo::rollmean(casos_novos_sum_pc, k = 7, fill = NA)) %>%
     ggplot() +
     geom_line(aes(x = datahora, y = casos_novos_sum_pc),
@@ -825,7 +826,7 @@ for(i in seq(na.omit(unique(da_sp$nome_drs)))){
   fig_planosp_new_deaths <- da_sp %>%
     dplyr::filter(nome_drs == unique(da_sp$nome_drs)[i]) %>% 
     dplyr::group_by(nome_drs, datahora) %>% 
-    dplyr::summarise(obitos_novos_sum_pc = sum(obitos_novos)/(sum(pop2019)/1e5)) %>% 
+    dplyr::summarise(obitos_novos_sum_pc = sum(obitos_novos)/(sum(pop2020)/1e5)) %>% 
     dplyr::mutate(obitos_novos_sum_pc_rollmean = zoo::rollmean(obitos_novos_sum_pc, k = 7, fill = NA)) %>%
     ggplot() +
     geom_line(aes(x = datahora, y = obitos_novos_sum_pc), 
@@ -850,9 +851,9 @@ for(i in seq(na.omit(unique(da_sp$nome_drs)))){
 # summary ----
 data_br <- sta_cases_time %>%
   dplyr::filter(abbrev_state == "TOTAL") %>%
-  dplyr::mutate(newCases_per_100k_inhabitants = newCases/(sum(info$pop2019)/1e5),
+  dplyr::mutate(newCases_per_100k_inhabitants = newCases/(sum(info$pop2020)/1e5),
                 newCases_br = zoo::rollmean(newCases_per_100k_inhabitants, 7, fill = NA),
-                newDeaths_per_100k_inhabitants = newDeaths/(sum(info$pop2019)/1e5),
+                newDeaths_per_100k_inhabitants = newDeaths/(sum(info$pop2020)/1e5),
                 newDeaths_br = zoo::rollmean(newDeaths_per_100k_inhabitants, k = 7, fill = NA)) %>% 
   dplyr::select(date, newCases_br, newDeaths_br)
 data_br
@@ -867,8 +868,8 @@ data_sp
 data_pi <- da_sp %>%
   dplyr::filter(nome_drs == "Piracicaba") %>% 
   dplyr::group_by(datahora) %>% 
-  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2019)/1e5),
-                   newDeaths_pc = sum(obitos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2020)/1e5),
+                   newDeaths_pc = sum(obitos_novos)/(sum(pop2020)/1e5)) %>% 
   dplyr::mutate(newCases_pi = zoo::rollmean(newCases_pc, k = 7, fill = NA),
                 newDeaths_pi = zoo::rollmean(newDeaths_pc, k = 7, fill = NA),
                 date = datahora) %>% 
@@ -878,8 +879,8 @@ data_pi
 data_rc <- da_sp %>%
   dplyr::filter(nome_munic == "Rio Claro") %>% 
   dplyr::group_by(datahora) %>% 
-  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2019)/1e5),
-                   newDeaths_pc = sum(obitos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2020)/1e5),
+                   newDeaths_pc = sum(obitos_novos)/(sum(pop2020)/1e5)) %>% 
   dplyr::mutate(newCases_rc = zoo::rollmean(newCases_pc, k = 7, fill = NA),
                 newDeaths_rc = zoo::rollmean(newDeaths_pc, k = 7, fill = NA),
                 date = datahora) %>% 
@@ -889,8 +890,8 @@ data_rc
 data_bo <- da_sp %>%
   dplyr::filter(nome_munic == "Botucatu") %>% 
   dplyr::group_by(datahora) %>% 
-  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2019)/1e5),
-                   newDeaths_pc = sum(obitos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2020)/1e5),
+                   newDeaths_pc = sum(obitos_novos)/(sum(pop2020)/1e5)) %>% 
   dplyr::mutate(newCases_bo = zoo::rollmean(newCases_pc, k = 7, fill = NA),
                 newDeaths_bo = zoo::rollmean(newDeaths_pc, k = 7, fill = NA),
                 date = datahora) %>% 
@@ -900,8 +901,8 @@ data_bo
 data_se <- da_sp %>%
   dplyr::filter(nome_munic == "Serrana") %>% 
   dplyr::group_by(datahora) %>% 
-  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2019)/1e5),
-                   newDeaths_pc = sum(obitos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2020)/1e5),
+                   newDeaths_pc = sum(obitos_novos)/(sum(pop2020)/1e5)) %>% 
   dplyr::mutate(newCases_se = zoo::rollmean(newCases_pc, k = 7, fill = NA),
                 newDeaths_se = zoo::rollmean(newDeaths_pc, k = 7, fill = NA),
                 date = datahora) %>% 
@@ -979,7 +980,7 @@ ggsave(filename = "graficos/fig_deaths_summary_pop.png",
 
 fig_brazil_new_cases_pop <- sta_cases_time %>%
   dplyr::filter(abbrev_state == "TOTAL") %>%
-  dplyr::mutate(newCases_per_100k_inhabitants = newCases/(sum(info$pop2019)/1e5),
+  dplyr::mutate(newCases_per_100k_inhabitants = newCases/(sum(info$pop2020)/1e5),
                 newCases_per_100k_inhabitants_rollmean = zoo::rollmean(newCases_per_100k_inhabitants, 7, fill = NA)) %>% 
   ggplot() +
   geom_line(aes(x = date, y = newCases_per_100k_inhabitants), 
@@ -1001,7 +1002,7 @@ ggsave(filename = "graficos/fig_brazil_new_cases_pop.png",
 
 fig_brazil_new_deaths_pop <- sta_cases_time %>%
   dplyr::filter(abbrev_state == "TOTAL") %>%
-  dplyr::mutate(newDeaths_per_100k_inhabitants = newDeaths/(sum(info$pop2019)/1e5),
+  dplyr::mutate(newDeaths_per_100k_inhabitants = newDeaths/(sum(info$pop2020)/1e5),
                 newDeaths_per_100k_inhabitants_rollmean = zoo::rollmean(newDeaths_per_100k_inhabitants, k = 7, fill = NA)) %>%
   ggplot() +
   geom_line(aes(x = date, y = newDeaths_per_100k_inhabitants), size = .2, 
@@ -1068,7 +1069,7 @@ ggsave(filename = "graficos/fig_state_sp_new_deaths_pop.png",
 fig_planosp_piracicaba_new_cases_pop <- da_sp %>%
   dplyr::filter(nome_drs == "Piracicaba") %>% 
   dplyr::group_by(datahora) %>% 
-  dplyr::summarise(casos_novos_sum_pc = sum(casos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::summarise(casos_novos_sum_pc = sum(casos_novos)/(sum(pop2020)/1e5)) %>% 
   dplyr::mutate(casos_novos_sum_pc_rollmean = zoo::rollmean(casos_novos_sum_pc, k = 7, fill = NA)) %>%
   ggplot() +
   geom_line(aes(x = datahora, y = casos_novos_sum_pc),
@@ -1092,7 +1093,7 @@ ggsave(filename = "graficos/fig_planosp_piracicaba_new_cases_pop.png",
 fig_planosp_piracicaba_new_deaths_pop <- da_sp %>%
   dplyr::filter(nome_drs == "Piracicaba") %>% 
   dplyr::group_by(nome_drs, datahora) %>% 
-  dplyr::summarise(obitos_novos_sum_pc = sum(obitos_novos_pc)/(sum(pop2019)/1e5)) %>% 
+  dplyr::summarise(obitos_novos_sum_pc = sum(obitos_novos_pc)/(sum(pop2020)/1e5)) %>% 
   dplyr::mutate(obitos_novos_sum_pc_rollmean = zoo::rollmean(obitos_novos_sum_pc, k = 7, fill = NA)) %>%
   ggplot() +
   geom_line(aes(x = datahora, y = obitos_novos_sum_pc), 
@@ -1115,7 +1116,7 @@ ggsave(filename = "graficos/fig_planosp_piracicaba_new_deaths_pop.png",
 fig_rio_claro_new_cases_pop <- da_sp %>%
   dplyr::filter(nome_munic == "Rio Claro") %>% 
   dplyr::group_by(datahora) %>% 
-  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::summarise(newCases_pc = sum(casos_novos)/(sum(pop2020)/1e5)) %>% 
   dplyr::mutate(newCases_per_100k_inhabitants_rollmean = zoo::rollmean(newCases_pc, k = 7, fill = NA)) %>% 
   ggplot() +
   geom_line(aes(x = datahora, y = newCases_pc), 
@@ -1139,7 +1140,7 @@ ggsave(filename = "graficos/fig_rio_claro_new_cases_pop.png",
 fig_rio_claro_new_deaths_pop <- da_sp %>%
   dplyr::filter(nome_munic == "Rio Claro") %>% 
   dplyr::group_by(datahora) %>% 
-  dplyr::summarise(newDeaths_pc = sum(obitos_novos)/(sum(pop2019)/1e5)) %>% 
+  dplyr::summarise(newDeaths_pc = sum(obitos_novos)/(sum(pop2020)/1e5)) %>% 
   dplyr::mutate(newdeaths_per_100k_inhabitants_rollmean = zoo::rollmean(newDeaths_pc, k = 7, fill = NA)) %>% 
   ggplot() +
   geom_line(aes(x = datahora, y = newDeaths_pc), 
