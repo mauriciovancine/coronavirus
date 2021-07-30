@@ -470,6 +470,10 @@ Outros sites com dados podem ser consultados aqui:
 ### Relação do número total de casos e de óbitos nas cidades (por 100 mil hab.) (GAM - Gaussian)
 ![](modelos/model_muni_cases_deaths_pop.png)
 
+Taxa do número total de mortes por óbitos (GAM - Gaussian)
+
+![](modelos/model_cases_deaths_rate.png)
+
 ---
 
 ## Mapas

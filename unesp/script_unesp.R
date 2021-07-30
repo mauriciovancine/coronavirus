@@ -33,7 +33,7 @@ dplyr::glimpse(sta_cases_time)
 sta_cases_time %>% 
   dplyr::filter(abbrev_state == "SP") %>% 
   ggplot(aes(x = totalCases_per_100k_inhabitants, y = totalDeaths_per_100k_inhabitants)) +
-  geom_point(color = "steelblue", size = 4, alpha = .5) +
+  geom_point(color = "steelblue", size = 4, alpha = .7) +
   stat_smooth(method = "gam", size = 2, color = "black", lty = 1) +
   theme_classic() +
   theme(axis.title = element_text(size = 25),
@@ -47,7 +47,7 @@ sta_cases_time %>%
   dplyr::filter(abbrev_state == "SP") %>% 
   ggplot(aes(x = newCases_per_100k_inhabitants, 
              y = newDeaths_per_100k_inhabitants)) +
-  geom_point(color = "steelblue", size = 4, alpha = .5) +
+  geom_point(color = "steelblue", size = 4, alpha = .7) +
   stat_smooth(method = "gam", size = 2, color = "black", lty = 1) +
   theme_classic() +
   theme(axis.title = element_text(size = 25),

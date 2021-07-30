@@ -81,9 +81,9 @@ mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid
   dplyr::mutate(name_muni = stringr::str_to_title(name_muni))
 dplyr::glimpse(mun_cases_time)
 
-mun_cases_time %>% 
-filter(name_muni == "Botucatu") %>% 
-  write_csv("botucatu.csv")
+# mun_cases_time %>% 
+# filter(name_muni == "Botucatu") %>% 
+#   write_csv("botucatu.csv")
 
 # percetage uti covid
 # uti <- readr::read_csv2("ocup_leitos_covid19_20210617_171832.csv")
@@ -1440,7 +1440,7 @@ ggsave(filename = "modelos/model_states_cases_deaths.png",
        plot = model_state_cases_deaths, width = 30, height = 20, units = "cm", dpi = 200)
 
 # model state pop ----
-model_state_cases_deaths_pop<- sta_cases %>%
+model_state_cases_deaths_pop <- sta_cases %>%
   dplyr::filter(abbrev_state != "TOTAL") %>%
   ggplot() +
   aes(x = totalCases_per_100k_inhabitants, y = deaths_per_100k_inhabitants) +
@@ -1499,6 +1499,28 @@ model_muni_cases_deaths_pop <- mun_cases %>%
 model_muni_cases_deaths_pop
 ggsave(filename = "modelos/model_muni_cases_deaths_pop.png", 
        plot = model_muni_cases_deaths_pop, width = 30, height = 20, units = "cm", dpi = 200)
+
+## Scatter new deats/cases per 100k per days ---
+model_state_cases_deaths_rate <- sta_cases_time %>%
+  dplyr::filter(abbrev_state == "TOTAL") %>%
+  ggplot() +
+  aes(x = date, 
+      y = deaths_by_totalCases) +
+  stat_smooth(method = "gam", formula = y ~ s(x, bs = "cs")) +
+  geom_point(size = 4, fill = "black", col = "gray", shape = 21, alpha = .7) +
+  scale_x_date(date_breaks = "10 day",
+               date_labels = "%d/%m") +
+  stat_smooth(method = "gam") +
+  theme_bw() +
+  theme(axis.title = element_text(size = 25),
+        axis.text.y = element_text(size = 20),
+        axis.text.x = element_text(angle = 90, vjust = .5)) +  
+  ylim(0, .07) + 
+  labs(x = "Data", 
+       y = "Novos mortes/novos casos")
+model_state_cases_deaths_rate
+ggsave(filename = "modelos/model_cases_deaths_rate.png", 
+       plot = model_state_cases_deaths_rate, width = 30, height = 20, units = "cm", dpi = 200)
 
 ## sus data ----------------------------------------------------------------
 # # sus
