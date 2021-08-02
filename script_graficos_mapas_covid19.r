@@ -209,7 +209,8 @@ cou_deaths <- wd_cases %>%
 cou_deaths
 
 fig_world_deaths <- wd_cases %>%
-  dplyr::filter(country_name %in% cou_deaths, date > "2020-02-20") %>%
+  dplyr::filter(country_name %in% cou_deaths, date > "2020-02-20",
+                deaths_pop > 0) %>%
   ggplot() +
   geom_line(aes(x = date, y = deaths_pop, color = country_name), size = .2) +
   geom_point(aes(x = date, y = deaths_pop, color = country_name, fill = country_name), 
