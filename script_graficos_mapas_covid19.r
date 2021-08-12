@@ -81,9 +81,6 @@ mun_cases_time <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid
   dplyr::mutate(name_muni = stringr::str_to_title(name_muni))
 dplyr::glimpse(mun_cases_time)
 
-# mun_cases_time %>% 
-# filter(name_muni == "Botucatu") %>% 
-#   write_csv("botucatu.csv")
 
 # percetage uti covid
 # uti <- readr::read_csv2("ocup_leitos_covid19_20210617_171832.csv")
@@ -897,7 +894,6 @@ data_bo <- da_sp %>%
                 newDeaths_bo = zoo::rollmean(newDeaths_pc, k = 7, fill = NA),
                 date = datahora) %>% 
   dplyr::select(date, newCases_bo, newDeaths_bo)
-data_bo
 
 data_se <- da_sp %>%
   dplyr::filter(nome_munic == "Serrana") %>% 
@@ -978,6 +974,36 @@ fig_deaths_summary_pop <- data_rc %>%
 fig_deaths_summary_pop
 ggsave(filename = "graficos/fig_deaths_summary_pop.png", 
        plot = fig_deaths_summary_pop, width = 30, height = 20, units = "cm", dpi = 200)
+
+
+
+scale_factor_cases <- max(data_bo$newCases_bo, na.rm = TRUE) / max(data_bo$newDeaths_bo, na.rm = TRUE)
+scale_factor_cases
+
+fig_cases_mortes_bo <- ggplot(data = data_bo, aes(x = date)) +
+  geom_line(aes(y = newCases_bo), color = "red", size = 1.5, alpha = .8) +
+  geom_line(aes(y = newDeaths_bo * scale_factor_cases), color = "gray30", size = 1.5, alpha = .8) +
+  labs(x = "Data") +
+  scale_x_date(date_breaks = "10 day", date_labels = "%d/%m") +
+  scale_y_continuous(name = "Número de novos casos (por 100 mil hab.)", 
+                     sec.axis = sec_axis(~./scale_factor_cases, name = "Número de novas mortes (por 100 mil hab.)")) +
+  
+  geom_vline(xintercept = as_date("2021-05-22"), color = "blue", linetype = 3) +
+  annotate("text", x = as_date("2021-05-22")-10, y = 200, size = 5, color = "blue",
+           label = "Vacinação em massa 1ª dose", alpha = .7, angle = 90) +
+  
+  geom_vline(xintercept = as_date("2021-08-08"), color = "blue", linetype = 3) +
+  annotate("text", x = as_date("2021-08-08")-10, y = 200, size = 5, color = "blue",
+           label = "Vacinação em massa 2ª dose", alpha = .7, angle = 90) +
+  
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5),
+        legend.position = "none",
+        axis.title.y.left = element_text(color = "red", size = 12),
+        axis.text.y.left = element_text(color = "red", size = 12),
+        axis.title.y.right = element_text(color = "gray30", size = 12),
+        axis.text.y.right = element_text(color = "gray30", size = 12))
+fig_cases_mortes_bo
 
 fig_brazil_new_cases_pop <- sta_cases_time %>%
   dplyr::filter(abbrev_state == "TOTAL") %>%
