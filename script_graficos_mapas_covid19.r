@@ -287,10 +287,10 @@ fig_world_vaccinations_fully <- wd_cases %>%
   #                color = country_name, fill = country_name),
   #            col = "white", size = 3, shape = 21, stroke = 1) +
   labs(x = "Data",
-       y = "Porcentagem da população totalmente vacinada (%)",
+       y = "Porcentagem da população vacinada com 1a e 2a doses (%)",
        color = "Countries",
        fill = "Countries",
-       title = "Porcentagem da população totalmente vacinada no mundo") +
+       title = "Porcentagem da população vacinada com 1a e 2a doses no mundo") +
   scale_x_date(date_breaks = "10 day",
                date_labels = "%d/%m") +
   scale_color_ucscgb() +
