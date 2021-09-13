@@ -44,7 +44,6 @@ Outros sites com dados podem ser consultados aqui:
 ### Resumo
 ![](graficos/fig_cases_summary_pop.png)
 ![](graficos/fig_deaths_summary_pop.png)
-![](graficos/fig_world_vaccinations.png)
 
 ![](graficos/fig_brazil_new_cases_pop.png)
 ![](graficos/fig_brazil_new_deaths_pop.png)
@@ -64,6 +63,12 @@ Outros sites com dados podem ser consultados aqui:
 
 #### Crescimento mundial de óbitos
 ![](graficos/fig_world_deaths.png)
+
+#### Vacinação mundial (Ao menos uma dose)
+![](graficos/fig_world_vaccinations.png)
+
+#### Vacinação mundial (Totalmente)
+![](graficos/fig_world_vaccinations_fully.png)
 
 ---
 
