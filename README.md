@@ -64,10 +64,10 @@ Outros sites com dados podem ser consultados aqui:
 #### Crescimento mundial de óbitos
 ![](graficos/fig_world_deaths.png)
 
-#### Vacinação mundial (Ao menos uma dose)
+#### Vacinação mundial (ao menos uma dose)
 ![](graficos/fig_world_vaccinations.png)
 
-#### Vacinação mundial (Totalmente)
+#### Vacinação mundial (1ª dose e 2ª dose)
 ![](graficos/fig_world_vaccinations_fully.png)
 
 ---

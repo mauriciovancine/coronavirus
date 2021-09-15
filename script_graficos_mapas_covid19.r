@@ -300,7 +300,7 @@ fig_world_vaccinations_fully <- wd_cases %>%
         legend.position = c(.15, .8))
 fig_world_vaccinations_fully
 ggsave(filename = "graficos/fig_world_vaccinations_fully.png",
-       plot = fig_world_vaccinations, width = 30, height = 20, units = "cm", dpi = 200)
+       plot = fig_world_vaccinations_fully, width = 30, height = 20, units = "cm", dpi = 200)
 
 # brazil ----
 # brazil total cases  ----
