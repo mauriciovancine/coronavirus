@@ -297,7 +297,7 @@ fig_world_vaccinations_fully <- wd_cases %>%
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .5),
         axis.text.y = element_text(angle = 90, hjust = .5),
-        legend.position = c(.15, .8))
+        legend.position = c(.15, .7))
 fig_world_vaccinations_fully
 ggsave(filename = "graficos/fig_world_vaccinations_fully.png",
        plot = fig_world_vaccinations_fully, width = 30, height = 20, units = "cm", dpi = 200)
