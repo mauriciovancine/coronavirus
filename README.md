@@ -3,7 +3,7 @@ Esse relatório mostra o número de casos e óbitos de **COVID-19**.
 
 Todos os dados usados aqui foram coletados do [site](https://labs.wesleycota.com/sarscov2/br/) do pesquisador [Wesley Cota](https://wesleycota.com/), que mostra o número de casos confirmados e óbitos de COVID-19.
 
-Ultima atualização: **23-11-2021**.
+Ultima atualização: **14-01-2022**.
 
 ## Fonte dos dados
 Inclui os dados confirmados pela plataforma oficial do Ministério da Saúde e demais noticiados pelas secretarias de saúde de cada estado.

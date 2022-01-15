@@ -47,8 +47,8 @@ wd_cases <- readr::read_csv("https://covid.ourworldindata.org/data/owid-covid-da
 wd_cases
 
 # variants
-wd_variants <- readr::read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/variants/covid-variants.csv")
-wd_variants
+# wd_variants <- readr::read_csv("https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/variants/covid-variants.csv")
+# wd_variants
 
 # municipality information
 info <- readr::read_csv("https://raw.githubusercontent.com/wcota/covid19br/master/cities_info.csv")
@@ -114,8 +114,8 @@ sta_geo_cen <- sf::st_centroid(sta_geo)
 sta_geo_cen
 
 # municipality geodata
-mun_geo <- geobr::read_municipality(code_muni = "all", year = 2020) %>%
-  sf::st_crop(sta_geo)
+mun_geo <- geobr::read_municipality(code_muni = "all", year = 2019) %>%
+    sf::st_crop(sta_geo)
 mun_geo
 
 # municipality centroids
